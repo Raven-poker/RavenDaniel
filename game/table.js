@@ -112,7 +112,7 @@ class Table {
     if (this.actingIndex > j) this.actingIndex--;
     if (this.hostToken === token && this.players.length) this.hostToken = this.players[0].token;
     const profit = p.stack + p.pendingAdd + p.banked - p.totalBuyIn;
-    this.log(`${p.name} が退出しました (収支 ${profit >= 0 ? '+' : ''}${fmt(profit)})`);
+    this.log(`${p.name} が退出しました (ポイント ${profit >= 0 ? '+' : ''}${fmt(profit)})`);
     this.broadcast();
   }
 
@@ -140,7 +140,7 @@ class Table {
     this.broadcast();
   }
 
-  // 初期持ち点を超えた分をテーブルから下ろし、確定収支(banked)にする
+  // 初期持ち点を超えた分をテーブルから下ろし、確定ポイント(banked)にする
   returnChips(token, amount) {
     const p = this.findPlayer(token);
     if (!p) return;
@@ -155,7 +155,7 @@ class Table {
     if (this.phase === 'waiting') {
       p.stack -= amount;
       p.banked += amount;
-      this.log(`${p.name} が ${fmt(amount)} を戻して収支を確定しました (確定分 計${fmt(p.banked)})`);
+      this.log(`${p.name} が ${fmt(amount)} を戻してポイントを確定しました (確定分 計${fmt(p.banked)})`);
     } else {
       p.pendingReturn += amount;
       this.log(`${p.name} が ${fmt(amount)} の戻しを予約しました (次のハンド前に反映)`);
@@ -212,7 +212,7 @@ class Table {
         if (ret > 0) {
           p.stack -= ret;
           p.banked += ret;
-          this.log(`${p.name} が ${fmt(ret)} を戻して収支を確定しました (確定分 計${fmt(p.banked)})`);
+          this.log(`${p.name} が ${fmt(ret)} を戻してポイントを確定しました (確定分 計${fmt(p.banked)})`);
         }
       }
       p.cards = [];

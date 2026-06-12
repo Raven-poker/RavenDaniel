@@ -92,7 +92,7 @@ $('returnChipsBtn').onclick = () => {
     return;
   }
   const v = prompt(
-    `戻すチップ数 (最大 ${fmt(surplus)})\n戻した分は確定収支になり、以降のハンドで失いません`,
+    `戻すチップ数 (最大 ${fmt(surplus)})\n戻した分は確定ポイントになり、以降のハンドで失いません`,
     surplus,
   );
   if (v === null) return;
@@ -202,7 +202,7 @@ function seatHTML(p, pos, isMe) {
       ${p.dealer ? '<div class="dealer-btn">D</div>' : ''}
       <div class="pname">${esc(p.name)}${isMe ? ' (あなた)' : ''}</div>
       <div class="pstack">${fmt(p.stack)}${pending}</div>
-      <div class="pprofit ${profitCls}">収支 ${profitTxt}</div>
+      <div class="pprofit ${profitCls}">ポイント ${profitTxt}</div>
       ${p.banked > 0 ? `<div class="pbank">確定 ${fmt(p.banked)}</div>` : ''}
       ${p.handName ? `<div class="phand">${p.handName}</div>` : ''}
       ${status ? `<div class="pstatus">${status}</div>` : ''}
@@ -265,7 +265,7 @@ function render() {
   } else wb.hidden = true;
 
   renderActions(st);
-  document.title = st.turn ? '🔔 あなたの番! - ホームポーカー' : 'ホームポーカー';
+  document.title = st.turn ? '🔔 あなたの番! - Poker Legends' : 'Poker Legends';
 }
 
 function renderActions(st) {

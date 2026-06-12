@@ -99,7 +99,7 @@ const fK = evaluate7([c(13, 0), c(9, 0), c(7, 0), c(4, 0), c(2, 0), c(3, 1), c(6
 assert.ok(fA.score > fK.score);
 console.log('OK: 役判定');
 
-// チップ戻し(確定収支)のテスト
+// チップ戻し(確定ポイント)のテスト
 {
   const t = new Table(fakeIo, 'RET', { sb: 50, bb: 100, buyIn: 10000, maxBuyIn: 10000 });
   t.fastMode = true;
@@ -115,7 +115,7 @@ console.log('OK: 役判定');
   assert.strictEqual(t.players[0].stack, 10000, '戻し後のスタック');
   assert.strictEqual(t.players[0].banked, 6000, '確定分');
   const v = t.stateFor(t.players[0]).players.find((p) => p.you);
-  assert.strictEqual(v.profit, 6000, '収支に確定分が反映される');
+  assert.strictEqual(v.profit, 6000, 'ポイントに確定分が反映される');
 
   // ハンド中は予約になり、次ハンド開始時に余剰の範囲で反映される
   // (X がさらに 3,000 勝った状態を再現)
@@ -131,7 +131,7 @@ console.log('OK: 役判定');
   assert.ok(x.pendingReturn === 0, '予約が消化される');
   assert.ok(x.stack >= 10000 - t.config.bb && x.banked >= 8400, '余剰の範囲で確定');
   assert.strictEqual(totalChips(t), totalBuyIn(t), '戻し後もチップ総量が保存される');
-  console.log('OK: チップ戻し(確定収支)');
+  console.log('OK: チップ戻し(確定ポイント)');
 }
 
 for (let i = 0; i < 5; i++) runGame(4, 300, `run${i + 1}`);
