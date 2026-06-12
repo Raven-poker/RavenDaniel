@@ -2,6 +2,8 @@ const { evaluate7 } = require('./evaluator');
 
 const TURN_LIMIT_MS = 45000;
 const TURN_LIMIT_DISCONNECTED_MS = 15000;
+const STAMP_LIST = ['🔥', '😎', '💪', '😱', '🤔', '😂', '👀', '🐔', '💀', '🙏', '💰', '😏'];
+const STAMP_COOLDOWN_MS = 2000;
 const NEXT_HAND_MS = 8000;
 const BETTING_PHASES = ['preflop', 'flop', 'turn', 'river'];
 
@@ -161,6 +163,19 @@ class Table {
       this.log(`${p.name} が ${fmt(amount)} の戻しを予約しました (次のハンド前に反映)`);
     }
     this.broadcast();
+  }
+
+  sendStamp(token, idx) {
+    const p = this.findPlayer(token);
+    if (!p) return;
+    idx = Math.floor(Number(idx));
+    if (!(idx >= 0 && idx < STAMP_LIST.length)) return;
+    const now = Date.now();
+    if (p.lastStampAt && now - p.lastStampAt < STAMP_COOLDOWN_MS) return; // 連打防止
+    p.lastStampAt = now;
+    if (!this.fastMode) {
+      this.io.to(this.code).emit('stamp', { name: p.name, stamp: STAMP_LIST[idx] });
+    }
   }
 
   setSitOut(token, sitOut) {

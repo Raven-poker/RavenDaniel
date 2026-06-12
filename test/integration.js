@@ -81,6 +81,19 @@ async function main() {
     await waitFor(() => clients.every((x) => x.state && x.state.phase === 'preflop'),
       'ハンド開始');
 
+    // スタンプ: 送信→全員に配信、クールダウン中の連打は無視
+    const stamps = [];
+    a.s.on('stamp', (d) => stamps.push(d));
+    b.s.emit('sendStamp', 0);
+    await waitFor(() => stamps.length === 1, 'スタンプ受信');
+    assert.strictEqual(stamps[0].name, 'ぼん');
+    assert.strictEqual(stamps[0].stamp, '🔥');
+    b.s.emit('sendStamp', 1); // 2秒以内の連打
+    b.s.emit('sendStamp', 99); // 不正なインデックス
+    await wait(800);
+    assert.strictEqual(stamps.length, 1, '連打と不正値は無視される');
+    console.log('OK: スタンプ送受信とクールダウン');
+
     // いま手番のプレイヤーを切断させる
     await waitFor(() => clients.some((x) => x.state.turn), '手番の発生');
     const dropped = clients.find((x) => x.state.turn);
@@ -96,8 +109,9 @@ async function main() {
     console.log('OK: 切断後もゲームが進行(自動フォールド)');
 
     // 残り2人でハンドが完了し、次のハンドが始まること
+    // (切断者がチェックで回せる場合は1ストリート15秒ずつ消化されるため長めに待つ)
     await waitFor(() => rest.some((x) => x.state.handNumber >= 2),
-      '残り2人での次ハンド開始', 30000);
+      '残り2人での次ハンド開始', 90000);
     console.log('OK: 残り2人で次のハンドが自動開始');
 
     // 別端末(新トークン)から同名で復帰

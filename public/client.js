@@ -110,6 +110,36 @@ $('waitingBox').addEventListener('click', (e) => {
   if (e.target.closest('#waitingInviteBtn')) showInvite();
 });
 
+// ---------- スタンプ ----------
+
+const STAMP_LIST = ['🔥', '😎', '💪', '😱', '🤔', '😂', '👀', '🐔', '💀', '🙏', '💰', '😏'];
+let seatPosByName = {};
+
+STAMP_LIST.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.textContent = s;
+  b.onclick = () => {
+    socket.emit('sendStamp', i);
+    $('stampPicker').hidden = true;
+  };
+  $('stampPicker').appendChild(b);
+});
+
+$('stampBtn').onclick = () => {
+  $('stampPicker').hidden = !$('stampPicker').hidden;
+};
+
+socket.on('stamp', ({ name, stamp }) => {
+  const pos = seatPosByName[name] || [50, 45];
+  const el = document.createElement('div');
+  el.className = 'stamp-bubble';
+  el.textContent = stamp;
+  el.style.left = `${pos[0]}%`;
+  el.style.top = `${Math.max(4, pos[1] - 9)}%`;
+  $('stampLayer').appendChild(el);
+  setTimeout(() => el.remove(), 2800);
+});
+
 // ---------- QR招待 ----------
 
 function inviteUrl() {
@@ -236,8 +266,16 @@ function render() {
   const others = ordered.slice(1);
   const posList = SEAT_POS[Math.min(others.length, 8)] || [];
   let html = '';
-  if (me && me.you) html += seatHTML(me, [50, 86], true);
-  others.forEach((p, i) => { html += seatHTML(p, posList[i] || [50, 12], false); });
+  seatPosByName = {};
+  if (me && me.you) {
+    html += seatHTML(me, [50, 86], true);
+    seatPosByName[me.name] = [50, 86];
+  }
+  others.forEach((p, i) => {
+    const pos = posList[i] || [50, 12];
+    html += seatHTML(p, pos, false);
+    seatPosByName[p.name] = pos;
+  });
   $('seats').innerHTML = html;
 
   // 結果・待機表示

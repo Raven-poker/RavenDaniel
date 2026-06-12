@@ -209,6 +209,38 @@ button.small.gold { background: #5b4a1e; color: #ffe9ad; }
   padding: 2px 8px; border-radius: 10px;
 }
 
+/* スタンプ */
+#stampBtn {
+  position: absolute; right: 18px; bottom: 14px;
+  width: 46px; height: 46px; border-radius: 50%;
+  font-size: 22px; background: var(--panel); border: 1px solid #3c5067;
+  box-shadow: 0 4px 12px rgba(0,0,0,.4); z-index: 6;
+}
+#stampPicker {
+  position: absolute; right: 14px; bottom: 68px;
+  background: rgba(13, 20, 29, .97); border: 1px solid #344659;
+  border-radius: 14px; padding: 10px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px;
+  z-index: 7; box-shadow: 0 8px 24px rgba(0,0,0,.5);
+}
+#stampPicker button {
+  font-size: 24px; background: transparent; padding: 7px 9px; border-radius: 8px;
+}
+#stampPicker button:hover, #stampPicker button:active { background: #2c3c4f; }
+#stampLayer { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+.stamp-bubble {
+  position: absolute; transform: translate(-50%, -50%);
+  font-size: 46px; text-shadow: 0 3px 10px rgba(0,0,0,.55);
+  animation: stampPop 2.8s ease forwards;
+}
+@keyframes stampPop {
+  0%   { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  10%  { transform: translate(-50%, -50%) scale(1.35); opacity: 1; }
+  20%  { transform: translate(-50%, -50%) scale(1); }
+  78%  { transform: translate(-50%, -55%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -70%) scale(.9); opacity: 0; }
+}
+
 /* アクションバー */
 #actionBar {
   background: var(--panel); padding: 10px 12px calc(10px + env(safe-area-inset-bottom));

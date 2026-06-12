@@ -111,6 +111,11 @@ io.on('connection', (socket) => {
     table.returnChips(token, Number(amount));
   });
 
+  socket.on('sendStamp', (idx) => {
+    if (!table || !token) return;
+    table.sendStamp(token, idx);
+  });
+
   socket.on('sitOut', (flag) => {
     if (!table || !token) return;
     table.setSitOut(token, !!flag);
