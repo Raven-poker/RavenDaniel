@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ホームポーカー</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ロビー画面 (トップページ) -->
+  <div id="lobby">
+    <div class="landing">
+      <section class="hero">
+        <div class="hero-suits">♠ ♥ ♦ ♣</div>
+        <h1>ホームポーカー</h1>
+        <p class="tagline">友だちと、いつでもどこでも。<br>テキサスホールデム・キャッシュゲーム。</p>
+        <a href="#start" class="primary cta">今すぐ始める</a>
+      </section>
+
+      <section class="features">
+        <div class="feature">
+          <div class="ficon">📱</div>
+          <div><h3>アプリ不要</h3>
+          <p>スマホ・PCのブラウザだけで遊べます。インストールも登録も不要。</p></div>
+        </div>
+        <div class="feature">
+          <div class="ficon">🔗</div>
+          <div><h3>QRで合流</h3>
+          <p>ルームを作ってQRを見せるだけ。友だちは読み取って名前を入れるだけ。</p></div>
+        </div>
+        <div class="feature">
+          <div class="ficon">🧮</div>
+          <div><h3>全部おまかせ</h3>
+          <p>配牌・役判定・ポット計算・サイドポット・収支の精算まで自動です。</p></div>
+        </div>
+      </section>
+
+      <section class="howto">
+        <h2>遊び方</h2>
+        <ol>
+          <li><b>ルームを作る</b> — ブラインドと持ち点を決めるだけ</li>
+          <li><b>友だちを招待</b> — QRコードか4文字のコードを共有</li>
+          <li><b>プレイ!</b> — 負けたらチップ追加、勝ったら「戻す」で収支を確定</li>
+        </ol>
+      </section>
+
+      <div class="lobby-card" id="start">
+      <h2 class="start-title">♠ さっそく始める</h2>
+
+      <label>あなたの名前
+        <input id="nameInput" maxlength="12" placeholder="例: たろう">
+      </label>
+
+      <div class="lobby-section">
+        <h2>ルームを作る</h2>
+        <div class="row3">
+          <label>SB <input id="sbInput" type="number" value="50" min="1"></label>
+          <label>BB <input id="bbInput" type="number" value="100" min="1"></label>
+        </div>
+        <div class="row3">
+          <label>持ち点 <input id="buyInInput" type="number" value="10000" min="1"></label>
+          <label>上限 (Max) <input id="maxBuyInInput" type="number" value="10000" min="1"></label>
+        </div>
+        <button id="createBtn" class="primary">ルーム作成</button>
+      </div>
+
+      <div class="lobby-section">
+        <h2>ルームに入る</h2>
+        <div class="join-row">
+          <input id="codeInput" maxlength="4" placeholder="コード (例: ABCD)" autocapitalize="characters">
+          <button id="joinBtn" class="primary">参加</button>
+        </div>
+      </div>
+
+      <p id="lobbyError" class="error"></p>
+      </div>
+
+      <footer class="landing-footer">遊び終わったら「収支」を見て精算してください 🃏</footer>
+    </div>
+  </div>
+
+  <!-- ゲーム画面 -->
+  <div id="game" hidden>
+    <header id="topbar">
+      <span id="roomInfo"></span>
+      <span class="spacer"></span>
+      <button id="inviteBtn" class="small gold">招待</button>
+      <button id="addChipsBtn" class="small">追加</button>
+      <button id="returnChipsBtn" class="small">戻す</button>
+      <button id="logBtn" class="small">ログ</button>
+      <button id="leaveBtn" class="small danger">退出</button>
+    </header>
+
+    <div id="tableArea">
+      <div id="felt">
+        <div id="center">
+          <div id="board"></div>
+          <div id="potLabel"></div>
+          <div id="resultBox" hidden></div>
+          <div id="waitingBox" hidden></div>
+        </div>
+        <div id="seats"></div>
+      </div>
+    </div>
+
+    <div id="actionBar" hidden>
+      <div id="raiseRow" hidden>
+        <div id="raiseTop">
+          <button id="raiseMinus" class="step">−</button>
+          <div id="raiseAmount">0</div>
+          <button id="raisePlus" class="step">＋</button>
+          <div id="raisePresets">
+            <button data-preset="min" class="small">最小</button>
+            <button data-preset="half" class="small">½ポット</button>
+            <button data-preset="pot" class="small">ポット</button>
+            <button data-preset="allin" class="small">All-in</button>
+          </div>
+        </div>
+        <input id="raiseSlider" type="range">
+      </div>
+      <div id="buttonRow">
+        <button id="foldBtn" class="action fold">フォールド</button>
+        <button id="checkCallBtn" class="action call"></button>
+        <button id="raiseBtn" class="action raise"></button>
+      </div>
+    </div>
+
+    <div id="logPanel" hidden>
+      <div id="logList"></div>
+    </div>
+
+    <div id="toast" hidden></div>
+
+    <!-- 招待モーダル -->
+    <div id="inviteModal" hidden>
+      <div class="invite-card">
+        <h2>友だちを招待</h2>
+        <p class="invite-hint">QRを読み取るとコード入力済みでこのサイトが開きます</p>
+        <div id="qrBox"></div>
+        <div id="inviteCode"></div>
+        <div id="inviteUrl"></div>
+        <p id="inviteWarn" class="invite-warn" hidden>⚠ localhost のURLは他の端末から開けません。トンネル(localtunnel等)か公開URLでアクセスしてください。</p>
+        <div class="invite-actions">
+          <button id="copyUrlBtn" class="small">URLをコピー</button>
+          <button id="inviteClose" class="small">閉じる</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/qrcode.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
+</body>
+</html>

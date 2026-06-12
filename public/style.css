@@ -1,0 +1,256 @@
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #101822;
+  --panel: #1b2735;
+  --felt1: #1e6b45;
+  --felt2: #124a2e;
+  --gold: #e8c468;
+  --text: #e8edf2;
+  --muted: #93a3b5;
+  --red: #e05555;
+  --green: #4cc97a;
+  --blue: #4a9fe0;
+}
+
+html, body { height: 100%; }
+body {
+  font-family: -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+[hidden] { display: none !important; }
+
+button { font-family: inherit; cursor: pointer; border: none; border-radius: 10px; }
+input {
+  font-family: inherit; font-size: 16px;
+  background: #0d141d; color: var(--text);
+  border: 1px solid #344659; border-radius: 8px; padding: 10px;
+  width: 100%;
+}
+
+/* ---------- ロビー (トップページ) ---------- */
+#lobby {
+  height: 100%; overflow-y: auto; padding: 0 16px 40px;
+  scroll-behavior: smooth;
+}
+.landing { max-width: 420px; margin: 0 auto; }
+
+.hero { text-align: center; padding: 56px 8px 36px; }
+.hero-suits {
+  font-size: 22px; letter-spacing: 12px; color: var(--gold);
+  margin-bottom: 10px;
+}
+.hero h1 { font-size: 34px; letter-spacing: 2px; }
+.tagline { color: var(--muted); font-size: 14px; line-height: 1.9; margin: 12px 0 22px; }
+.cta {
+  display: inline-block; width: auto; text-decoration: none;
+  padding: 14px 38px; border-radius: 12px; font-size: 16px;
+}
+
+.features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 26px; }
+.feature {
+  background: var(--panel); border: 1px solid #2c3c4f; border-radius: 14px;
+  padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start;
+}
+.feature .ficon { font-size: 26px; line-height: 1.2; }
+.feature h3 { font-size: 14px; margin-bottom: 3px; }
+.feature p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+.howto {
+  background: rgba(30, 107, 69, .12); border: 1px solid #2c4f3c;
+  border-radius: 14px; padding: 16px 18px; margin-bottom: 26px;
+}
+.howto h2 { font-size: 15px; margin-bottom: 10px; color: var(--gold); }
+.howto ol { padding-left: 20px; font-size: 13px; line-height: 2.1; color: var(--text); }
+
+.lobby-card {
+  width: 100%; background: var(--panel);
+  border-radius: 16px; padding: 24px; box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  scroll-margin-top: 16px;
+}
+.start-title { font-size: 18px; margin-bottom: 14px; }
+.landing-footer {
+  text-align: center; color: var(--muted); font-size: 12px; margin-top: 28px;
+}
+.lobby-card label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.lobby-card label input { margin-top: 4px; }
+.lobby-section {
+  border-top: 1px solid #2c3c4f; margin-top: 16px; padding-top: 14px;
+}
+.lobby-section h2 { font-size: 15px; margin-bottom: 10px; }
+.row3 { display: flex; gap: 8px; }
+.join-row { display: flex; gap: 8px; }
+.join-row input { text-transform: uppercase; letter-spacing: 2px; }
+.primary {
+  background: var(--green); color: #07240f; font-weight: 700;
+  font-size: 16px; padding: 12px 18px; width: 100%; margin-top: 4px;
+}
+.join-row .primary { width: auto; flex-shrink: 0; }
+.error { color: var(--red); font-size: 13px; margin-top: 12px; min-height: 1em; }
+
+/* ---------- ゲーム ---------- */
+#game { height: 100%; display: flex; flex-direction: column; }
+
+#topbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; background: var(--panel); font-size: 13px;
+}
+#roomInfo { color: var(--muted); }
+#roomInfo b { color: var(--gold); letter-spacing: 2px; }
+.spacer { flex: 1; }
+button.small {
+  background: #2c3c4f; color: var(--text); font-size: 12px; padding: 7px 10px;
+}
+button.small.danger { background: #4f2c2c; color: #f0b0b0; }
+button.small.gold { background: #5b4a1e; color: #ffe9ad; }
+
+/* 招待モーダル */
+#inviteModal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65);
+  display: flex; align-items: center; justify-content: center; z-index: 100;
+}
+.invite-card {
+  background: var(--panel); border: 1px solid #344659; border-radius: 16px;
+  padding: 20px; text-align: center; width: min(320px, 92vw);
+  box-shadow: 0 12px 40px rgba(0,0,0,.6);
+}
+.invite-card h2 { font-size: 17px; margin-bottom: 4px; }
+.invite-hint { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+#qrBox {
+  background: #fff; border-radius: 12px; padding: 14px;
+  display: inline-block; line-height: 0;
+}
+#qrBox svg { width: 190px; height: 190px; }
+#inviteCode {
+  font-size: 26px; font-weight: 800; color: var(--gold);
+  letter-spacing: 6px; margin-top: 10px;
+}
+#inviteUrl { font-size: 11px; color: var(--muted); word-break: break-all; margin: 8px 0 4px; }
+.invite-warn { font-size: 11px; color: #f0c060; margin: 6px 0; }
+.invite-actions { display: flex; gap: 8px; justify-content: center; margin-top: 10px; }
+
+#tableArea { flex: 1; position: relative; padding: 10px; min-height: 0; }
+#felt {
+  position: absolute; inset: 12px;
+  background: radial-gradient(ellipse at center, var(--felt1), var(--felt2) 75%);
+  border: 6px solid #3a2c1c;
+  border-radius: 45% / 38%;
+  box-shadow: inset 0 0 60px rgba(0,0,0,.45), 0 10px 30px rgba(0,0,0,.5);
+}
+
+#center {
+  position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  width: 90%;
+}
+#board { display: flex; gap: 5px; min-height: 58px; }
+#potLabel { font-size: 14px; color: var(--gold); font-weight: 700; text-shadow: 0 1px 3px rgba(0,0,0,.6); }
+
+#resultBox, #waitingBox {
+  background: rgba(10, 16, 24, .88); border: 1px solid var(--gold);
+  border-radius: 12px; padding: 10px 16px; text-align: center;
+  font-size: 14px; line-height: 1.7; max-width: 95%;
+}
+#waitingBox { border-color: #4a5d73; color: var(--muted); }
+#waitingBox button { margin-top: 8px; }
+
+/* カード */
+.card {
+  width: 40px; height: 56px; border-radius: 6px;
+  background: #f7f7f2; color: #1a1a1a;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 17px; line-height: 1;
+  box-shadow: 0 2px 5px rgba(0,0,0,.4);
+}
+.card span { font-size: 15px; }
+.card.red { color: #cf2e3e; }
+.card.back {
+  background: repeating-linear-gradient(45deg, #2a4f8a, #2a4f8a 4px, #234373 4px, #234373 8px);
+  border: 2px solid #d8dde2;
+}
+.card.sm { width: 30px; height: 42px; font-size: 13px; border-radius: 4px; }
+.card.sm span { font-size: 11px; }
+
+/* 座席 */
+.seat {
+  position: absolute; transform: translate(-50%, -50%);
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  width: 110px; text-align: center;
+}
+.seat .cards { display: flex; gap: 3px; min-height: 42px; }
+.pod {
+  background: rgba(10, 16, 24, .82); border: 2px solid #3c5067;
+  border-radius: 10px; padding: 5px 10px; width: 100%;
+  position: relative;
+}
+.seat.acting .pod { border-color: var(--gold); box-shadow: 0 0 14px rgba(232,196,104,.7); }
+.seat.folded { opacity: .45; }
+.seat.away .pod { border-style: dashed; opacity: .7; }
+.pod .pname { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pod .pstack { font-size: 13px; color: var(--gold); font-weight: 700; }
+.pod .pprofit { font-size: 10px; }
+.pod .pprofit.plus { color: var(--green); }
+.pod .pprofit.minus { color: var(--red); }
+.pod .pbank { font-size: 10px; color: #7fd4a0; }
+.pod .phand { font-size: 10px; color: var(--blue); }
+.pod .pstatus { font-size: 10px; color: var(--muted); }
+.dealer-btn {
+  position: absolute; top: -8px; right: -8px;
+  background: #fff; color: #222; font-size: 10px; font-weight: 800;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+.bet-chip {
+  background: rgba(0,0,0,.55); color: #ffd97a; font-size: 11px; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px;
+}
+
+/* アクションバー */
+#actionBar {
+  background: var(--panel); padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  display: flex; flex-direction: column; gap: 8px;
+}
+#buttonRow { display: flex; gap: 8px; }
+button.action {
+  flex: 1; padding: 14px 6px; font-size: 15px; font-weight: 700; border-radius: 12px;
+}
+button.action:disabled { opacity: .35; }
+.action.fold { background: #5b2e35; color: #f3b8c0; }
+.action.call { background: #2e4a5b; color: #bfe3f3; }
+.action.raise { background: #5b4a1e; color: #ffe9ad; }
+#raiseRow { display: flex; flex-direction: column; gap: 8px; }
+#raiseTop { display: flex; align-items: center; gap: 8px; }
+button.step {
+  background: #2c3c4f; color: var(--text); font-size: 20px; font-weight: 700;
+  width: 42px; height: 38px; border-radius: 10px; flex-shrink: 0;
+}
+#raiseAmount {
+  min-width: 76px; text-align: center; font-size: 17px; font-weight: 800;
+  color: var(--gold);
+}
+#raiseSlider { width: 100%; accent-color: var(--gold); height: 28px; }
+#raisePresets { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+
+/* ログ */
+#logPanel {
+  position: absolute; right: 10px; top: 48px; bottom: 10px; width: min(280px, 75vw);
+  background: rgba(13, 20, 29, .96); border: 1px solid #344659; border-radius: 12px;
+  padding: 10px; overflow-y: auto; z-index: 20;
+}
+#logList { font-size: 12px; line-height: 1.8; color: var(--muted); }
+#logList div.hr { color: var(--gold); }
+
+/* トースト */
+#toast {
+  position: fixed; left: 50%; bottom: 110px; transform: translateX(-50%);
+  background: #402530; color: #ffc4c4; border: 1px solid var(--red);
+  padding: 8px 16px; border-radius: 10px; font-size: 13px; z-index: 50;
+}
+
+@media (max-height: 600px) {
+  .card { width: 33px; height: 47px; font-size: 14px; }
+}
